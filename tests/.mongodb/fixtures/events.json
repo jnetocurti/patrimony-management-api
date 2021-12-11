@@ -1,0 +1,26 @@
+[
+    {
+        "_id": {
+            "$oid": "62476a58784e762f7310eaf2"
+        },
+        "broker": "BROKER XPTO",
+        "event_type": "SUBSCRIPTION",
+        "event_date": {
+            "$date": "2022-04-01T00:00:00Z"
+        },
+        "effective_event_date": {
+            "$date": "2022-04-01T00:00:00Z"
+        },
+        "asset_code": "XPTO3",
+        "asset_derived_code": "XPTO4",
+        "asset_type": "BRL_STOCKS",
+        "quantity": 1,
+        "unit_value": 1,
+        "costs": 1,
+        "currency": "BRL",
+        "note": "",
+        "asset_id": {
+            "$oid": "62476a58784e762f7310eaf1"
+        }
+    }
+]

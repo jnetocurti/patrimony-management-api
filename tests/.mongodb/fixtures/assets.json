@@ -1,0 +1,12 @@
+[
+    {
+        "_id": {
+            "$oid": "62476a58784e762f7310eaf1"
+        },
+        "quantity": 1,
+        "asset_code": "XOPT3",
+        "asset_type": "BRL_STOCKS",
+        "total_acquisition_cost": 1,
+        "unit_acquisition_cost": 1
+    }
+]
