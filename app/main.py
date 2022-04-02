@@ -4,6 +4,7 @@ from app.api import (
     assets,
     asset_types,
     event_types,
+    trade_notes,
     subscriptions,
     currency_types
 )
@@ -13,6 +14,7 @@ from app.core.business import ensure_indexes
 app = FastAPI()
 app.include_router(assets.router)
 app.include_router(subscriptions.router)
+app.include_router(trade_notes.router)
 app.include_router(asset_types.router)
 app.include_router(event_types.router)
 app.include_router(currency_types.router)

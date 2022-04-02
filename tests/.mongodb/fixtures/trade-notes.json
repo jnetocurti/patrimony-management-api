@@ -1,0 +1,41 @@
+[
+    {
+        "_id": {
+            "$oid": "624b4f0e2b746ffa4848da79"
+        },
+        "note_id": "4h8sj38dj",
+        "broker": "BROKER XPTO",
+        "trade_date": {
+            "$date": "2022-04-04T00:00:00Z"
+        },
+        "liquidate_date": {
+            "$date": "2022-04-04T00:00:00Z"
+        },
+        "total_amount": 2.1,
+        "currency": "BRL",
+        "note_items": [
+            {
+                "asset_code": "XPTO3",
+                "asset_type": "BRL_STOCKS",
+                "event_type": "BUY",
+                "quantity": 1,
+                "unit_value": 1,
+                "costs": 0.05,
+                "event_id": {
+                    "$oid": "624b4f0e2b746ffa4848da77"
+                }
+            },
+            {
+                "asset_code": "XPTO3",
+                "asset_type": "BRL_STOCKS",
+                "event_type": "BUY",
+                "quantity": 1,
+                "unit_value": 1,
+                "costs": 0.05,
+                "event_id": {
+                    "$oid": "624b4f0e2b746ffa4848da78"
+                }
+            }
+        ]
+    }
+]

@@ -48,5 +48,5 @@ class SubscriptionService:
     # quando exclusão do último evento associado ao ativo
     async def delete(self, id: str) -> None:
 
-        event = await EventDoc.get(id)
-        await event.delete()
+        if event := await EventDoc.get(id):
+            await event.delete()

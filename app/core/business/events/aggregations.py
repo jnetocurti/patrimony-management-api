@@ -9,7 +9,7 @@ async def aggregate_to_assets(asset_code, asset_type):
                 "asset_code": asset_code,
                 "asset_type": asset_type,
                 "event_type": {
-                    "$in": [EventType.SUBSCRIPTION.value]
+                    "$in": [EventType.BUY.value, EventType.SUBSCRIPTION.value]
                 }
             }
         },

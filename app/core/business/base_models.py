@@ -25,6 +25,11 @@ class PyObjectId(ObjectId):
 class DocumentIdMixin(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
 
+    class Config:
+        arbitrary_types_allowed = True
+        allow_population_by_field_name = True
+        json_encoders = {PyObjectId: str}
+
 
 @connection.instance.register
 class Document(UmongoDocument):
@@ -33,8 +38,11 @@ class Document(UmongoDocument):
         return cls.commit()
 
     def update(cls, data):
-        cls._data.update(data)
+        cls.update_data(data)
         return cls.save()
+
+    def update_data(cls, data):
+        super(Document, cls).update(data)
 
     @classmethod
     def get(cls, id):
@@ -43,6 +51,10 @@ class Document(UmongoDocument):
     @classmethod
     def find(cls, **filter):
         return super(Document, cls).find(filter)
+
+    @classmethod
+    async def delete_many(cls, filter):
+        return await cls.collection.delete_many(filter)
 
     @classmethod
     def _get_id_query(cls, id):

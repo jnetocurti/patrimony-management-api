@@ -8,9 +8,6 @@ from tests.api.schemas.subscriptions import (
 from app.core.business.events.aggregations import aggregate_to_assets
 from app.core.business.subscriptions.services import SubscriptionService
 
-# workaround - limitation with transactional decorator mock... thanks python
-SubscriptionService.create = SubscriptionService.create.__wrapped__
-
 
 class TestSubscriptionsFindAll:
 
