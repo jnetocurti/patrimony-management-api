@@ -6,11 +6,11 @@ from tests.api.schemas.trade_note_schema import (
     trade_notes_schema
 )
 
+from app.core.business.assets.services import AssetService
 from app.core.business.trade_notes.models import (
     BaseTradeNote,
     BaseTradeNoteItem
 )
-from app.core.business.events.aggregations import aggregate_to_assets
 
 
 class TestTradeNoteFindAll:
@@ -59,7 +59,7 @@ class TestTradeNoteServiceCreateATradeNote:
         response = await async_client.post("/trade_notes/", json=payload)
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, "xpto11", "BRL_STOCKS")
+            AssetService.update_totals, "xpto11", "BRL_STOCKS")
 
         assert response.status_code == 201
         assert response.json() == trade_note_schema
@@ -84,7 +84,7 @@ class TestTradeNoteServiceUpdateATradeNote:
         )
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, "XPTO3", "BRL_STOCKS")
+            AssetService.update_totals, "XPTO3", "BRL_STOCKS")
 
         assert response.status_code == 200
         assert response.json() == trade_note_schema
@@ -119,7 +119,7 @@ class TestTradeNoteServiceDeleteATradeNote:
             "/trade_notes/624b4f0e2b746ffa4848da79")
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, "XPTO3", "BRL_STOCKS")
+            AssetService.update_totals, "XPTO3", "BRL_STOCKS")
 
         assert response.status_code == 204
 

@@ -36,7 +36,7 @@ class TradeNoteService:
         if document := await TradeNoteDoc.get(id):
 
             await self._update_items(document, trade_note)
-            await document.update(trade_note.dict(exclude={"note_items"}))
+            await document.update(**trade_note.dict(exclude={"note_items"}))
 
             return TradeNote(**document.dump())
 

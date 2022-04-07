@@ -37,7 +37,7 @@ class Document(UmongoDocument):
     def save(cls):
         return cls.commit()
 
-    def update(cls, data):
+    def update(cls, **data):
         cls.update_data(data)
         return cls.save()
 

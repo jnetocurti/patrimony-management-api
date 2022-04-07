@@ -8,7 +8,7 @@ from fastapi import (
     BackgroundTasks
 )
 
-from app.core.business.events.aggregations import aggregate_to_assets
+from app.core.business.assets.services import AssetService
 from app.core.business.subscriptions.models import (
     Subscription,
     PatchSubscription,
@@ -43,9 +43,9 @@ async def create_a_subscription(
     subscription = await service.create(subscription)
 
     background_tasks.add_task(
-        aggregate_to_assets,
+        AssetService.update_totals,
         subscription.asset_code,
-        subscription.asset_type.value
+        subscription.asset_type
     )
 
     return subscription
@@ -60,9 +60,9 @@ async def partially_update_a_subscription(
 ):
     if subscription := await service.update(id, subscription):
         background_tasks.add_task(
-            aggregate_to_assets,
+            AssetService.update_totals,
             subscription.asset_code,
-            subscription.asset_type.value
+            subscription.asset_type
         )
         return subscription
 
@@ -77,10 +77,11 @@ async def delete_a_subscription(
 ):
     if subscription := await service.get(id):
         asset_code, asset_type = (
-            subscription.asset_code, subscription.asset_type.value)
+            subscription.asset_code, subscription.asset_type)
         await service.delete(id)
 
-        background_tasks.add_task(aggregate_to_assets, asset_code, asset_type)
+        background_tasks.add_task(
+            AssetService .update_totals, asset_code, asset_type)
         return Response(status_code=204)
 
     raise HTTPException(status_code=404)

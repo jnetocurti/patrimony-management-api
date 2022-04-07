@@ -4,7 +4,7 @@ from datetime import date
 from pydantic import Field
 
 from app.core.business.base_models import DocumentIdMixin
-from app.core.business.events.models import BaseCreateEvent, BasePatchEvent
+from app.core.business.events.models import BasePatchEvent, BaseCreateEvent
 
 
 class BaseSubscription(BaseCreateEvent):

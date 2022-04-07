@@ -8,8 +8,8 @@ from fastapi import (
     BackgroundTasks
 )
 
+from app.core.business.assets.services import AssetService
 from app.core.business.trade_notes.models import TradeNote, BaseTradeNote
-from app.core.business.events.aggregations import aggregate_to_assets
 from app.core.business.trade_notes.services import TradeNoteService
 
 router = APIRouter(tags=["Trade Notes"], prefix="/trade_notes")
@@ -42,7 +42,7 @@ async def create_a_trade_note(
 ):
     trade_note = await service.create(trade_note)
 
-    [background_tasks.add_task(aggregate_to_assets, i[0], i[1])
+    [background_tasks.add_task(AssetService.update_totals, i[0], i[1])
      for i in assets_to_summarize(trade_note)]
 
     return trade_note
@@ -61,7 +61,7 @@ async def update_a_trade_note(
         old_assets = assets_to_summarize(old_trade_note)
         trade_note = await service.update(id, trade_note)
 
-        [background_tasks.add_task(aggregate_to_assets, i[0], i[1])
+        [background_tasks.add_task(AssetService.update_totals, i[0], i[1])
          for i in (old_assets.union(assets_to_summarize(trade_note)))]
 
         return trade_note
@@ -78,7 +78,7 @@ async def delete_a_trade_note(
     if trade_note := await service.get(id):
 
         await service.delete(id)
-        [background_tasks.add_task(aggregate_to_assets, i[0], i[1])
+        [background_tasks.add_task(AssetService.update_totals, i[0], i[1])
          for i in (assets_to_summarize(trade_note))]
 
         return Response(status_code=204)

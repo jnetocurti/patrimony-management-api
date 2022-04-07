@@ -41,11 +41,9 @@ class SubscriptionService:
     ) -> Subscription:
 
         if event := await EventDoc.get(id):
-            await event.update(subscription.dict())
+            await event.update(**subscription.dict())
             return Subscription(**event.dump())
 
-    # TODO corrigir problema agregação de totais na coleção asset
-    # quando exclusão do último evento associado ao ativo
     async def delete(self, id: str) -> None:
 
         if event := await EventDoc.get(id):

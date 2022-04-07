@@ -6,7 +6,7 @@ from tests.api.schemas.subscriptions import (
     subscriptions_schema
 )
 
-from app.core.business.events.aggregations import aggregate_to_assets
+from app.core.business.assets.services import AssetService
 from app.core.business.subscriptions.models import BaseSubscription
 
 
@@ -57,7 +57,7 @@ class TestSubscriptionsCreateASubscription:
             "/assets/subscriptions/", json=payload)
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, "xpto11", "BRL_STOCKS")
+            AssetService.update_totals, "xpto11", "BRL_STOCKS")
 
         assert response.status_code == 201
         assert response.json() == subscription_schema
@@ -78,7 +78,7 @@ class TestSubscriptionsPartiallyUpdateASubscription:
             "/assets/subscriptions/62476a58784e762f7310eaf2", json=payload)
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, 'XPTO3', 'BRL_STOCKS')
+            AssetService.update_totals, 'XPTO3', 'BRL_STOCKS')
 
         assert response.status_code == 200
         assert response.json() == subscription_schema
@@ -112,7 +112,7 @@ class TestSubscriptionsDeleteASubscription:
             "/assets/subscriptions/62476a58784e762f7310eaf2")
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, 'XPTO3', 'BRL_STOCKS')
+            AssetService.update_totals, 'XPTO3', 'BRL_STOCKS')
 
         assert response.status_code == 204
 
