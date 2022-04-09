@@ -20,9 +20,9 @@ class BaseCreateEvent(BaseModel):
     asset_code: str = Field(min_length=1)
     quantity: float = Field(gt=0.00001)
     unit_value: float = Field(gt=0.01)
-    costs: float = Field()
+    costs: Optional[float] = Field()
     currency: CurrencyType = Field()
-    note: str = Field()
+    note: Optional[str] = Field()
 
     class Config:
         allow_population_by_field_name = True
@@ -37,17 +37,17 @@ class BaseCreateEventExtras(BaseCreateEvent):
     effective_event_date: Optional[date] = Field()
 
 
-class BasePatchEvent(BaseModel):
+class BasePatchEvent(BaseCreateEvent):
     """
     Represents a portfolio event with common fields to update
     """
     broker: Optional[str] = Field(min_length=1)
     event_date: Optional[date] = Field()
+    asset_type: Optional[AssetType] = Field()
+    asset_code: Optional[str] = Field(min_length=1)
     quantity: Optional[float] = Field(gt=0.00001)
     unit_value: Optional[float] = Field(gt=0.01)
-    costs: Optional[float] = Field()
     currency: Optional[CurrencyType] = Field()
-    note: Optional[str] = Field()
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, exclude_unset=True, **kwargs)

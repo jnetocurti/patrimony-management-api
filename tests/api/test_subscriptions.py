@@ -1,4 +1,5 @@
 import pytest
+from fastapi.encoders import jsonable_encoder
 from tests.api.schemas.commons import not_found_schema
 from tests.api.schemas.subscriptions import (
     subscription_schema,
@@ -6,7 +7,7 @@ from tests.api.schemas.subscriptions import (
 )
 
 from app.core.business.events.aggregations import aggregate_to_assets
-from app.core.business.subscriptions.services import SubscriptionService
+from app.core.business.subscriptions.models import BaseSubscription
 
 
 class TestSubscriptionsFindAll:
@@ -48,25 +49,15 @@ class TestSubscriptionsCreateASubscription:
         self, async_client, add_background_tasks_mock
     ):
 
-        payload = {
-            "broker": "broker",
-            "subscription_date": "2022-04-01",
-            "asset_type": "BRL_STOCKS",
-            "asset_code": "asset_code",
-            "quantity": 1,
-            "unit_value": 1,
-            "costs": 1,
-            "currency": "BRL",
-            "note": "note",
-            "receipt_conversion_date": "2022-04-01",
-            "subscription_code": "subscription_code"
-        }
+        payload = jsonable_encoder(
+            BaseSubscription.builder().build()
+        )
 
         response = await async_client.post(
             "/assets/subscriptions/", json=payload)
 
         add_background_tasks_mock.assert_called_once_with(
-            aggregate_to_assets, "asset_code", "BRL_STOCKS")
+            aggregate_to_assets, "xpto11", "BRL_STOCKS")
 
         assert response.status_code == 201
         assert response.json() == subscription_schema
@@ -79,17 +70,9 @@ class TestSubscriptionsPartiallyUpdateASubscription:
         self, async_client, add_background_tasks_mock
     ):
 
-        payload = {
-            "broker": "broker",
-            "subscription_date": "2022-04-01",
-            "quantity": 1,
-            "unit_value": 1,
-            "costs": 1,
-            "currency": "BRL",
-            "note": "note",
-            "receipt_conversion_date": "2022-04-01",
-            "subscription_code": "subscription_code"
-        }
+        payload = jsonable_encoder(
+            BaseSubscription.builder().with_asset_code("XPTO3").build()
+        )
 
         response = await async_client.patch(
             "/assets/subscriptions/62476a58784e762f7310eaf2", json=payload)
@@ -105,17 +88,9 @@ class TestSubscriptionsPartiallyUpdateASubscription:
         self, async_client, add_background_tasks_mock
     ):
 
-        payload = {
-            "broker": "broker",
-            "subscription_date": "2022-04-01",
-            "quantity": 1,
-            "unit_value": 1,
-            "costs": 1,
-            "currency": "BRL",
-            "note": "note",
-            "receipt_conversion_date": "2022-04-01",
-            "subscription_code": "subscription_code"
-        }
+        payload = jsonable_encoder(
+            BaseSubscription.builder().build()
+        )
 
         response = await async_client.patch(
             "/assets/subscriptions/2fae0137f267e48785a67426", json=payload)

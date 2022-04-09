@@ -1,12 +1,7 @@
-from tests.core.business.builders import TradeNoteBuilder
-
-from app.core.business.trade_notes.models import (
-    BaseTradeNote,
-    BaseTradeNoteItem
-)
+from tests.core.business.builders import TradeNoteBuilder, SubscriptionBuilder
 
 
 def ensure_builders():
-    setattr(BaseTradeNote, "builder", staticmethod(lambda: TradeNoteBuilder()))
-    setattr(BaseTradeNoteItem, "builder", staticmethod(
-        lambda: TradeNoteBuilder.TradeNoteItemBuilder()))
+    TradeNoteBuilder.ensure_builder()
+    TradeNoteBuilder.TradeNoteItemBuilder.ensure_builder()
+    SubscriptionBuilder.ensure_builder()

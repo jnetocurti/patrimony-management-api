@@ -4,17 +4,22 @@ from datetime import date
 from pydantic import Field
 
 from app.core.business.base_models import DocumentIdMixin
-from app.core.business.events.models import BasePatchEvent, BaseCreateEvent
+from app.core.business.events.models import BaseCreateEvent, BasePatchEvent
 
 
-class CreateSubscription(BaseCreateEvent):
+class BaseSubscription(BaseCreateEvent):
     """
     Represents a subscription event
     """
     event_date: date = Field(alias="subscription_date")
-    effective_event_date: Optional[date] = Field(
-        alias="receipt_conversion_date")
+    effective_event_date: date = Field(alias="receipt_conversion_date")
     asset_derived_code: str = Field(min_length=1, alias="subscription_code")
+
+
+class CreateSubscription(BaseSubscription):
+    """
+    Represents a subscription event to be create
+    """
 
 
 class PatchSubscription(BasePatchEvent):
